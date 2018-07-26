@@ -133,6 +133,7 @@ namespace 库存计算
                     }
 
                     var resultInventoryDt = inventoryDt.Clone();
+                    resultInventoryDt.Columns["数量"].DataType = typeof(int);
                     foreach (DataRow inventoryRow in inventoryDt.AsEnumerable())
                     {
                         inventoryRow["已发数量"] = String.IsNullOrEmpty(inventoryRow["已发数量"].ToString()) ? 0 : int.Parse(inventoryRow["已发数量"].ToString());

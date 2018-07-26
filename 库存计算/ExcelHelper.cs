@@ -7,6 +7,7 @@
     using NPOI.SS.UserModel;
     using NPOI.XSSF.UserModel;
     using System.Text.RegularExpressions;
+    using System.Collections.Generic;
 
     public class ExcelHelper : IDisposable
     {
@@ -125,7 +126,11 @@
                         IRow row = sheet.CreateRow(0);
                         for (j = 0; j < data.Columns.Count; ++j)
                         {
-                            row.CreateCell(j).SetCellValue(data.Columns[j].ColumnName);
+                            //List<string> ary =new List<string> { "数量", "已发数量", "剩余库存" };
+                            //if(ary.Contains( data.Columns[j].ColumnName))
+                            //    row.CreateCell(j, CellType.Numeric).SetCellValue(data.Columns[j].ColumnName);
+                            //else
+                                row.CreateCell(j).SetCellValue(data.Columns[j].ColumnName);
                         }
                         count = 1;
                     }
@@ -138,7 +143,48 @@
                         IRow row = sheet.CreateRow(count);
                         for (j = 0; j < data.Columns.Count; ++j)
                         {
-                            row.CreateCell(j).SetCellValue(data.Rows[i][j].ToString());
+                            var newCell = row.CreateCell(j);
+                            var drValue = data.Rows[i][j].ToString();
+                            switch (data.Columns[j].DataType.ToString())
+                            {
+                                case "System.String"://字符串类型   
+                                case "System.DateTime"://日期类型 
+                                    newCell.SetCellValue(drValue);
+                                    break;
+                                //case "System.DateTime"://日期类型   
+                                //    DateTime dateV;
+                                //    DateTime.TryParse(drValue, out dateV);
+                                //    newCell.SetCellValue(drValue);
+
+                                //    newCell.CellStyle = dateStyle;//格式化显示   
+                                //    break;
+                                case "System.Boolean"://布尔型   
+                                    bool boolV = false;
+                                    bool.TryParse(drValue, out boolV);
+                                    newCell.SetCellValue(boolV);
+                                    break;
+                                case "System.Int16"://整型   
+                                case "System.Int32":
+                                case "System.Int64":
+                                case "System.Byte":
+                                    int intV = 0;
+                                    int.TryParse(drValue, out intV);
+                                    newCell.SetCellValue(intV);
+                                    break;
+                                case "System.Decimal"://浮点型   
+                                case "System.Double":
+                                    double doubV = 0;
+                                    double.TryParse(drValue, out doubV);
+                                    newCell.SetCellValue(doubV);
+                                    break;
+                                case "System.DBNull"://空值处理   
+                                    newCell.SetCellValue("");
+                                    break;
+                                default:
+                                    newCell.SetCellValue("");
+                                    break;
+                            }
+                            //row.CreateCell(j).SetCellValue(data.Rows[i][j].ToString());
                         }
                         ++count;
                     }                    
