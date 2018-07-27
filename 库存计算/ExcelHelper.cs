@@ -164,12 +164,16 @@
                                     newCell.SetCellValue(boolV);
                                     break;
                                 case "System.Int16"://整型   
-                                case "System.Int32":
-                                case "System.Int64":
+                                case "System.Int32":                                
                                 case "System.Byte":
                                     int intV = 0;
                                     int.TryParse(drValue, out intV);
                                     newCell.SetCellValue(intV);
+                                    break;
+                                case "System.Int64":
+                                    long longV = 0;
+                                    long.TryParse(drValue, out longV);
+                                    newCell.SetCellValue(longV);
                                     break;
                                 case "System.Decimal"://浮点型   
                                 case "System.Double":

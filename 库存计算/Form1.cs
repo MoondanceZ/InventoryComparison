@@ -114,6 +114,10 @@ namespace 库存计算
 
                     //保存最终结果
                     var resultOrderDt = tempOrderDt.Clone();
+                    resultOrderDt.Columns["订购号码"].DataType = typeof(long);
+                    resultOrderDt.Columns["购物车号码"].DataType = typeof(long);
+                    resultOrderDt.Columns["商品代码"].DataType = typeof(long);
+                    resultOrderDt.Columns["数量"].DataType = typeof(int);
                     foreach (DataRow item in tempOrderDt.AsEnumerable())
                     {
                         var inventoryRow = inventoryDt.AsEnumerable().FirstOrDefault(m => m.Field<string>("款号") == item["选项代码"].ToString());
