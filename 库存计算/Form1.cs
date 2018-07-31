@@ -120,6 +120,8 @@ namespace 库存计算
                     resultOrderDt.Columns["数量"].DataType = typeof(int);
                     foreach (DataRow item in tempOrderDt.AsEnumerable())
                     {
+                        if (String.IsNullOrEmpty(item["选项代码"].ToString()) && String.IsNullOrEmpty(item["数量"].ToString()))
+                            continue;
                         var inventoryRow = inventoryDt.AsEnumerable().FirstOrDefault(m => m.Field<string>("款号") == item["选项代码"].ToString());
                         if (inventoryRow != null)
                         {
@@ -140,8 +142,10 @@ namespace 库存计算
                     resultInventoryDt.Columns["数量"].DataType = typeof(int);
                     foreach (DataRow inventoryRow in inventoryDt.AsEnumerable())
                     {
+                        if (String.IsNullOrEmpty(inventoryRow["数量"].ToString()) && String.IsNullOrEmpty(inventoryRow["款号"].ToString()))
+                            continue;
                         inventoryRow["已发数量"] = String.IsNullOrEmpty(inventoryRow["已发数量"].ToString()) ? 0 : int.Parse(inventoryRow["已发数量"].ToString());
-                        //inventoryRow["剩余库存"] = String.IsNullOrWhiteSpace(inventoryRow["剩余库存"].ToString()) ? int.Parse(inventoryRow["数量"].ToString()) : int.Parse(inventoryRow["剩余库存"].ToString());
+                        inventoryRow["剩余库存"] = String.IsNullOrEmpty(inventoryRow["剩余库存"].ToString()) ? int.Parse(inventoryRow["数量"].ToString()) : int.Parse(inventoryRow["剩余库存"].ToString());
                         resultInventoryDt.ImportRow(inventoryRow);
                     }
 
