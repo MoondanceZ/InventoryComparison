@@ -107,7 +107,7 @@ namespace 库存计算
 
                     //订单excel排序
                     var tempOrderDt = orderDt.Clone();
-                    foreach (DataRow item in orderDt.AsEnumerable().OrderBy(m => m.Field<string>("选项代码")).ThenBy(m => Convert.ToDateTime(m.Field<string>("汇款日"))))
+                    foreach (DataRow item in orderDt.AsEnumerable().OrderBy(m => m.Field<string>("选项代码")).ThenBy(m => Convert.ToDateTime(m.Field<string>("订购日"))))
                     {
                         tempOrderDt.ImportRow(item);
                     }
