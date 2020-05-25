@@ -107,7 +107,7 @@ namespace 库存计算
 
                     //订单excel排序
                     var tempOrderDt = orderDt.Clone();
-                    foreach (DataRow item in orderDt.AsEnumerable().OrderBy(m => m.Field<string>("选项代码")).ThenBy(m => Convert.ToDateTime(m.Field<string>("汇款日"))))
+                    foreach (DataRow item in orderDt.AsEnumerable().OrderBy(m => m.Field<string>("选项代码")).ThenBy(m => Convert.ToInt64(m.Field<string>("发货日"))).ThenBy(m => Convert.ToDateTime(m.Field<string>("订购日"))))
                     {
                         tempOrderDt.ImportRow(item);
                     }
@@ -142,7 +142,7 @@ namespace 库存计算
                     resultInventoryDt.Columns["数量"].DataType = typeof(int);
                     foreach (DataRow inventoryRow in inventoryDt.AsEnumerable())
                     {
-                        if (String.IsNullOrEmpty(inventoryRow["数量"].ToString()) && String.IsNullOrEmpty(inventoryRow["款号"].ToString()))
+                        if (String.IsNullOrEmpty(inventoryRow["数量"].ToString()) || String.IsNullOrEmpty(inventoryRow["款号"].ToString()))
                             continue;
                         inventoryRow["已发数量"] = String.IsNullOrEmpty(inventoryRow["已发数量"].ToString()) ? 0 : int.Parse(inventoryRow["已发数量"].ToString());
                         inventoryRow["剩余库存"] = String.IsNullOrEmpty(inventoryRow["剩余库存"].ToString()) ? int.Parse(inventoryRow["数量"].ToString()) : int.Parse(inventoryRow["剩余库存"].ToString());
@@ -163,14 +163,14 @@ namespace 库存计算
                         MessageBox.Show("没有可以发货的款号");
                 }
             }
-            catch (IOException ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            //catch (IOException ex)
+            //{
+            //    MessageBox.Show(ex.Message);
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message);
+            //}
             finally
             {
                 btnTransfer.Text = "计算";
